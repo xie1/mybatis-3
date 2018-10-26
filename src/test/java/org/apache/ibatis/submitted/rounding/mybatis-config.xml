@@ -39,6 +39,8 @@
 		</environment>
 	</environments>
 
+
+	<!--定义 SQL 映射语句,满足有映射mapper	-->
 	<mappers>
 		<mapper resource="org/apache/ibatis/submitted/rounding/Mapper.xml" />
 	</mappers>
