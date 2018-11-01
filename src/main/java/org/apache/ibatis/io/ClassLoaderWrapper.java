@@ -68,6 +68,8 @@ public class ClassLoaderWrapper {
   }
 
   /*
+
+    通过指定的类加载器进行加载
    * Get a resource from the classpath, starting with a specific class loader
    *
    * @param resource    - the resource to find
@@ -103,7 +105,7 @@ public class ClassLoaderWrapper {
 
   /*
    * Try to get a resource from a group of classloaders
-   *
+   *  通过一组类加载进行加载资源
    * @param resource    - the resource to get
    * @param classLoader - the classloaders to examine
    * @return the resource or null
@@ -127,6 +129,7 @@ public class ClassLoaderWrapper {
     }
     return null;
   }
+
 
   /*
    * Get a resource as a URL using the current class path
@@ -201,6 +204,13 @@ public class ClassLoaderWrapper {
 
   }
 
+
+  /**
+   * 获取类加载器
+   * 加载五个类放置数组中
+   * @param classLoader
+   * @return
+   */
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
         classLoader,

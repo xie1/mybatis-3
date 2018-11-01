@@ -20,6 +20,7 @@ public class MyBatisTest {
 
     @Before
     public void prepare() throws IOException {
+        // 通过读取配置获得输入流
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -31,8 +32,7 @@ public class MyBatisTest {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             ArticleDao articleDao = session.getMapper(ArticleDao.class);
-            List<Article> articles = articleDao.
-                    findByAuthorAndCreateTime("2", "2018-06-10");
+            List<Article> articles = articleDao.findByAuthorAndCreateTime("2", "2018-06-10");
             for (Article article : articles) {
                 System.out.println(article.getId());
             }

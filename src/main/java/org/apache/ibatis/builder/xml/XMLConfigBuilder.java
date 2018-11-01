@@ -96,6 +96,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    // 获取Configuration的内容
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }

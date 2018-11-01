@@ -90,6 +90,7 @@ public class Resources {
   }
 
   /*
+    返回输入流(读取)通过Resources调用ClassLoader类加载器加载
    * Returns a resource on the classpath as a Stream object
    *
    * @param resource The resource to find
@@ -102,7 +103,7 @@ public class Resources {
 
   /*
    * Returns a resource on the classpath as a Stream object
-   *
+   * 调用ClassLoader 方法
    * @param loader   The classloader used to fetch the resource
    * @param resource The resource to find
    * @return The resource
