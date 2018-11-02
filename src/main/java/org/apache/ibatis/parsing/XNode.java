@@ -30,14 +30,20 @@ import org.w3c.dom.NodeList;
  * @author Clinton Begin
  */
 public class XNode {
-
+  //Node 对象
   private final Node node;
+  //Node节点名称
   private final String name;
+  //Node节点内容
   private final String body;
+  //节点属性集合
   private final Properties attributes;
   private final Properties variables;
+  //XNode对象由xpathParser生成
   private final XPathParser xpathParser;
 
+
+  //初始化
   public XNode(XPathParser xpathParser, Node node, Properties variables) {
     this.xpathParser = xpathParser;
     this.node = node;

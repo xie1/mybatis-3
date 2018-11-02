@@ -32,6 +32,7 @@ public class PropertyParser {
    * </p>
    * @since 3.4.2
    */
+  //在<Properties>节点下配置是否开启默认值功能对应配置项
   public static final String KEY_ENABLE_DEFAULT_VALUE = KEY_PREFIX + "enable-default-value";
 
   /**
@@ -41,9 +42,11 @@ public class PropertyParser {
    * </p>
    * @since 3.4.2
    */
+  //配置占位符和默认值之间的默认分隔符对应的配置项
   public static final String KEY_DEFAULT_VALUE_SEPARATOR = KEY_PREFIX + "default-value-separator";
 
   private static final String ENABLE_DEFAULT_VALUE = "false";
+  //默认分隔符是冒号
   private static final String DEFAULT_VALUE_SEPARATOR = ":";
 
   private PropertyParser() {
@@ -52,13 +55,21 @@ public class PropertyParser {
 
   public static String parse(String string, Properties variables) {
     VariableTokenHandler handler = new VariableTokenHandler(variables);
+    //并指定其处理的占位符格式为"${}"
     GenericTokenParser parser = new GenericTokenParser("${", "}", handler);
     return parser.parse(string);
   }
 
+
+  /**
+   * VariableTokenHandler 是PropertyParser的静态私有内部类
+   */
   private static class VariableTokenHandler implements TokenHandler {
+    //<properties>节点下定义的键值对，用于替换占位符
     private final Properties variables;
+    //是否占位符开启默认功能
     private final boolean enableDefaultValue;
+    //指定占位符和默认值之间的分隔符
     private final String defaultValueSeparator;
 
     private VariableTokenHandler(Properties variables) {
@@ -76,9 +87,11 @@ public class PropertyParser {
       if (variables != null) {
         String key = content;
         if (enableDefaultValue) {
+          // 查找分割符
           final int separatorIndex = content.indexOf(defaultValueSeparator);
           String defaultValue = null;
           if (separatorIndex >= 0) {
+            // 查找占位符的名称
             key = content.substring(0, separatorIndex);
             defaultValue = content.substring(separatorIndex + defaultValueSeparator.length());
           }

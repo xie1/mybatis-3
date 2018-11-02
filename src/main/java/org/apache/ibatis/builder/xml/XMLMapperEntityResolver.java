@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  * @author Eduardo Macarron
  */
 public class XMLMapperEntityResolver implements EntityResolver {
-
+  // 指定mybatis-config.xml和映射文件对应的dtd的systemId
   private static final String IBATIS_CONFIG_SYSTEM = "ibatis-3-config.dtd";
   private static final String IBATIS_MAPPER_SYSTEM = "ibatis-3-mapper.dtd";
   private static final String MYBATIS_CONFIG_SYSTEM = "mybatis-3-config.dtd";
@@ -42,7 +42,8 @@ public class XMLMapperEntityResolver implements EntityResolver {
 
   /*
    * Converts a public DTD into a local one
-   * 
+   *
+   * 转化成本地的DTD
    * @param publicId The public id that is what comes after "PUBLIC"
    * @param systemId The system id that is what comes after the public id.
    * @return The InputSource for the DTD

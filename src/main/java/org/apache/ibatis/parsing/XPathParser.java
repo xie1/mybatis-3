@@ -44,10 +44,19 @@ import org.xml.sax.SAXParseException;
  */
 public class XPathParser {
 
+  // 组合了Document接口
   private final Document document;
+
+  // 用于开启验证
   private boolean validation;
+
+  //用于加载本地的DTD文件
   private EntityResolver entityResolver;
+
+  //Mybatis-config.xml 中<properties>标签定义的键值对集合
   private Properties variables;
+
+  //XPath
   private XPath xpath;
 
   public XPathParser(String xml) {
@@ -121,7 +130,9 @@ public class XPathParser {
   }
 
   public XPathParser(InputStream inputStream, boolean validation, Properties variables, EntityResolver entityResolver) {
+    //对于传入的值进行XPathParser
     commonConstructor(validation, variables, entityResolver);
+    //根据转入的字节流解析成DOM树结构
     this.document = createDocument(new InputSource(inputStream));
   }
 
@@ -144,7 +155,10 @@ public class XPathParser {
     return result;
   }
 
+
+  //用于解析基本类型的包装类信息
   public Boolean evalBoolean(String expression) {
+      //真正调用
     return evalBoolean(document, expression);
   }
 
@@ -217,17 +231,33 @@ public class XPathParser {
     return new XNode(this, node, variables);
   }
 
+  /**
+   * 调用xpath方法进行处理解析
+   * @param expression
+   * @param root
+   * @param returnType
+   * @return
+   */
   private Object evaluate(String expression, Object root, QName returnType) {
     try {
+      //查找指定路径的节点或属性，并进行相应的类型转化
       return xpath.evaluate(expression, root, returnType);
     } catch (Exception e) {
       throw new BuilderException("Error evaluating XPath.  Cause: " + e, e);
     }
   }
 
+
+  /**
+   * 通过转入的输入流进行对XML的解析（采用DOM解析）
+   * @param inputSource
+   * @return
+   */
   private Document createDocument(InputSource inputSource) {
+    // 在完成初始化之后调用
     // important: this must only be called AFTER common constructor
     try {
+      //初始化DocumentBuilderFactory
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(validation);
 
@@ -237,8 +267,11 @@ public class XPathParser {
       factory.setCoalescing(false);
       factory.setExpandEntityReferences(true);
 
+
+      //创建DocumentBuilder并进行配置
       DocumentBuilder builder = factory.newDocumentBuilder();
       builder.setEntityResolver(entityResolver);
+      //设置异常处理对象
       builder.setErrorHandler(new ErrorHandler() {
         @Override
         public void error(SAXParseException exception) throws SAXException {
@@ -254,6 +287,7 @@ public class XPathParser {
         public void warning(SAXParseException exception) throws SAXException {
         }
       });
+      //加载XML文件
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);
@@ -261,10 +295,13 @@ public class XPathParser {
   }
 
   private void commonConstructor(boolean validation, Properties variables, EntityResolver entityResolver) {
+    //赋初值
     this.validation = validation;
     this.entityResolver = entityResolver;
     this.variables = variables;
+    //初始化一个XPathFactory
     XPathFactory factory = XPathFactory.newInstance();
+    //生成一个xpath
     this.xpath = factory.newXPath();
   }
 
