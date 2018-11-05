@@ -31,16 +31,21 @@ import java.util.Arrays;
 public class TypeParameterResolver {
 
   /**
+    解析字段类型
    * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
    */
   public static Type resolveFieldType(Field field, Type srcType) {
+//    获得的字段的声明类型
     Type fieldType = field.getGenericType();
+//    获得字段定义所在的类的Class对象
     Class<?> declaringClass = field.getDeclaringClass();
+//    调用resolveType进一步的解析，srcType查找该字段的起始位置
     return resolveType(fieldType, srcType, declaringClass);
   }
 
   /**
+   * 解析返回值类型
    * @return The return type of the method as {@link Type}. If it has type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
    */
@@ -51,6 +56,7 @@ public class TypeParameterResolver {
   }
 
   /**
+   * 解析方法参数列表中各个参数
    * @return The parameter types of the method as an array of {@link Type}s. If they have type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
    */
@@ -65,10 +71,14 @@ public class TypeParameterResolver {
   }
 
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
-    if (type instanceof TypeVariable) {
+    // 多态确定方法的调用
+//    类型变量（存在一个泛型的变量）
+      if (type instanceof TypeVariable) {
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);
+//    参数变量（参数都是泛型）
     } else if (type instanceof ParameterizedType) {
       return resolveParameterizedType((ParameterizedType) type, srcType, declaringClass);
+//    数组变量（数组的类型都是泛型）
     } else if (type instanceof GenericArrayType) {
       return resolveGenericArrayType((GenericArrayType) type, srcType, declaringClass);
     } else {
@@ -76,16 +86,27 @@ public class TypeParameterResolver {
     }
   }
 
+  /**
+   * 解析泛型数组
+   * @param genericArrayType
+   * @param srcType
+   * @param declaringClass
+   * @return
+   */
   private static Type resolveGenericArrayType(GenericArrayType genericArrayType, Type srcType, Class<?> declaringClass) {
+    //获取数组元素的类型
     Type componentType = genericArrayType.getGenericComponentType();
     Type resolvedComponentType = null;
+//   数组泛型参数是否包含其他参数类型
     if (componentType instanceof TypeVariable) {
       resolvedComponentType = resolveTypeVar((TypeVariable<?>) componentType, srcType, declaringClass);
     } else if (componentType instanceof GenericArrayType) {
+//      递归调用
       resolvedComponentType = resolveGenericArrayType((GenericArrayType) componentType, srcType, declaringClass);
     } else if (componentType instanceof ParameterizedType) {
       resolvedComponentType = resolveParameterizedType((ParameterizedType) componentType, srcType, declaringClass);
     }
+//    根据解析后的数组项类型构造返回类型
     if (resolvedComponentType instanceof Class) {
       return Array.newInstance((Class<?>) resolvedComponentType, 0).getClass();
     } else {
@@ -146,6 +167,7 @@ public class TypeParameterResolver {
     }
 
     if (clazz == declaringClass) {
+      // 获取上界
       Type[] bounds = typeVar.getBounds();
       if(bounds.length > 0) {
         return bounds[0];
@@ -154,6 +176,7 @@ public class TypeParameterResolver {
     }
 
     Type superclass = clazz.getGenericSuperclass();
+//    第一参数，Type
     result = scanSuperTypes(typeVar, srcType, declaringClass, clazz, superclass);
     if (result != null) {
       return result;
@@ -168,6 +191,8 @@ public class TypeParameterResolver {
     }
     return Object.class;
   }
+
+
 
   private static Type scanSuperTypes(TypeVariable<?> typeVar, Type srcType, Class<?> declaringClass, Class<?> clazz, Type superclass) {
     if (superclass instanceof ParameterizedType) {

@@ -20,15 +20,18 @@ import java.util.Locale;
 import org.apache.ibatis.reflection.ReflectionException;
 
 /**
+ * 提供方法名到属性名的转化
  * @author Clinton Begin
  */
 public final class PropertyNamer {
 
+  //私有的构造器方法
   private PropertyNamer() {
     // Prevent Instantiation of Static Class
   }
 
   public static String methodToProperty(String name) {
+//    把以下开头的几个类型方法名，截到，转为属性名
     if (name.startsWith("is")) {
       name = name.substring(2);
     } else if (name.startsWith("get") || name.startsWith("set")) {
@@ -44,6 +47,7 @@ public final class PropertyNamer {
     return name;
   }
 
+//  检测是否方法名是否包含以下
   public static boolean isProperty(String name) {
     return name.startsWith("get") || name.startsWith("set") || name.startsWith("is");
   }
