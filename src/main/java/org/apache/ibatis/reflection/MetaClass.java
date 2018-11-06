@@ -32,14 +32,20 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 public class MetaClass {
 
+
+  //ReflectorFactory 缓存Reflector对象
   private final ReflectorFactory reflectorFactory;
+
+  //
   private final Reflector reflector;
 
+//  私有的构造方法
   private MetaClass(Class<?> type, ReflectorFactory reflectorFactory) {
     this.reflectorFactory = reflectorFactory;
     this.reflector = reflectorFactory.findForClass(type);
   }
 
+//  对外提供
   public static MetaClass forClass(Class<?> type, ReflectorFactory reflectorFactory) {
     return new MetaClass(type, reflectorFactory);
   }
@@ -147,8 +153,10 @@ public class MetaClass {
   }
 
   public boolean hasGetter(String name) {
+//    解析属性表达式
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {
+//      PropertyTokenizer.name 指定的属性有getter方法，才能处理子查询
       if (reflector.hasGetter(prop.getName())) {
         MetaClass metaProp = metaClassForProperty(prop);
         return metaProp.hasGetter(prop.getChildren());
@@ -169,13 +177,18 @@ public class MetaClass {
   }
 
   private StringBuilder buildProperty(String name, StringBuilder builder) {
+//    解析复杂的属性表达式
     PropertyTokenizer prop = new PropertyTokenizer(name);
+//    是否还有子表达式
     if (prop.hasNext()) {
       String propertyName = reflector.findPropertyName(prop.getName());
       if (propertyName != null) {
+//        追加属性名
         builder.append(propertyName);
         builder.append(".");
+//      初始化MetaClass
         MetaClass metaProp = metaClassForProperty(propertyName);
+//        递归
         metaProp.buildProperty(prop.getChildren(), builder);
       }
     } else {
@@ -187,8 +200,11 @@ public class MetaClass {
     return builder;
   }
 
+
   public boolean hasDefaultConstructor() {
     return reflector.hasDefaultConstructor();
   }
+
+
 
 }

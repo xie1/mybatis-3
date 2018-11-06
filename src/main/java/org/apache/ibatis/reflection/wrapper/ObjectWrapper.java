@@ -22,18 +22,24 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ *
+ * 获取/设置对象中指定的属性值
  * @author Clinton Begin
  */
 public interface ObjectWrapper {
 
+//  如果ObjectWrapper中封装的是普通的bean对象，则调用相应属性的相应getter方法
+//  如果封装的是集合类，则获取指定key或下标对应的value值
   Object get(PropertyTokenizer prop);
 
   void set(PropertyTokenizer prop, Object value);
 
+//  查找属性表达式指定的属性，第二参数表示是否忽略属性表达式中的下画线
   String findProperty(String name, boolean useCamelCaseMapping);
 
   String[] getGetterNames();
 
+//  查找可读属性名称集合
   String[] getSetterNames();
 
   Class<?> getSetterType(String name);
@@ -44,6 +50,7 @@ public interface ObjectWrapper {
 
   boolean hasGetter(String name);
 
+//  为属性表达式指定的属性创建相应的MetaObject对象
   MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory);
   
   boolean isCollection();

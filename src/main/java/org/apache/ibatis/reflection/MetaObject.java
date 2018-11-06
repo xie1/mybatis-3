@@ -32,8 +32,10 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
  */
 public class MetaObject {
 
+//  原始对象的封装
   private final Object originalObject;
   private final ObjectWrapper objectWrapper;
+//
   private final ObjectFactory objectFactory;
   private final ObjectWrapperFactory objectWrapperFactory;
   private final ReflectorFactory reflectorFactory;
@@ -57,6 +59,7 @@ public class MetaObject {
     }
   }
 
+//  静态获取MetaObject对象方法
   public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
     if (object == null) {
       return SystemMetaObject.NULL_META_OBJECT;
@@ -124,6 +127,7 @@ public class MetaObject {
   }
 
   public void setValue(String name, Object value) {
+//   解析属性表达式
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {
       MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
