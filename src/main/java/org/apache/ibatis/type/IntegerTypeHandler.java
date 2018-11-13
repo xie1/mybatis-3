@@ -25,12 +25,15 @@ import java.sql.SQLException;
  */
 public class IntegerTypeHandler extends BaseTypeHandler<Integer> {
 
+//  非空参数
   @Override
   public void setNonNullParameter(PreparedStatement ps, int i, Integer parameter, JdbcType jdbcType)
       throws SQLException {
+//    调用PreparedStatement.setInt()实现参数绑定
     ps.setInt(i, parameter);
   }
 
+//  获取为空结果
   @Override
   public Integer getNullableResult(ResultSet rs, String columnName)
       throws SQLException {
