@@ -21,6 +21,9 @@ import java.lang.reflect.Type;
 /**
  * References a generic type.
  *
+ *  抽象类不一定需要抽象方法
+ *  但是具有抽象方法的类一定要定义抽象类
+ *
  * @param <T> the referenced type
  * @since 3.1.0
  * @author Simone Tripodi
@@ -38,6 +41,7 @@ public abstract class TypeReference<T> {
     if (genericSuperclass instanceof Class) {
       // try to climb up the hierarchy until meet something useful
       if (TypeReference.class != genericSuperclass) {
+//        递归操作
         return getSuperclassTypeParameter(clazz.getSuperclass());
       }
 

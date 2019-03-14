@@ -28,7 +28,7 @@ import org.apache.ibatis.session.Configuration;
  * <p>
  * Important: Since 3.5.0, This class never call the {@link ResultSet#wasNull()} and
  * {@link CallableStatement#wasNull()} method for handling the SQL {@code NULL} value.
- * In other words, {@code null} value handling should be performed on subclass.
+ * In other words, {@code null} value handling should be performed on subclass(子类).
  * </p>
  * 
  * @author Clinton Begin
@@ -75,6 +75,8 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
       }
     }
   }
+
+  // 方法重载
 
   @Override
   public T getResult(ResultSet rs, String columnName) throws SQLException {

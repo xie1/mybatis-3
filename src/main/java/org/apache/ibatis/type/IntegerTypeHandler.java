@@ -30,6 +30,7 @@ public class IntegerTypeHandler extends BaseTypeHandler<Integer> {
   public void setNonNullParameter(PreparedStatement ps, int i, Integer parameter, JdbcType jdbcType)
       throws SQLException {
 //    调用PreparedStatement.setInt()实现参数绑定
+//    PreparedStatement是一个接口，通过对应厂商的实现进行方法的实现
     ps.setInt(i, parameter);
   }
 
@@ -44,6 +45,7 @@ public class IntegerTypeHandler extends BaseTypeHandler<Integer> {
   @Override
   public Integer getNullableResult(ResultSet rs, int columnIndex)
       throws SQLException {
+//    获取指定的列值
     int result = rs.getInt(columnIndex);
     return (result == 0 && rs.wasNull()) ? null : result;
   }
