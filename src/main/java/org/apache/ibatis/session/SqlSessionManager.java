@@ -32,6 +32,7 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 /**
  * @author Larry Meadors
  */
+//目前没有使用（类似于Connection,用于创建类似于statement的sqlSession）
 public class SqlSessionManager implements SqlSessionFactory, SqlSession {
 
   private final SqlSessionFactory sqlSessionFactory;

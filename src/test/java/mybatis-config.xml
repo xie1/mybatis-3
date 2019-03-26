@@ -3,16 +3,22 @@
     PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
+
 <configuration>
+    <!--数据库外部配置-->
     <properties resource="jdbc.properties"/>
 
+    <!--定义别名-->
     <typeAliases>
         <typeAlias alias="Article" type="org.apache.ibatis.demo.model.Article"/>
     </typeAliases>
 
+    <!--定义数据库信息，默认使用development数据库构建环境-->
     <environments default="development">
         <environment id="development">
+            <!--采用了jdbc事务管理模式-->
             <transactionManager type="JDBC"/>
+            <!--配置数据库连接信息-->
             <dataSource type="POOLED">
                 <property name="driver" value="${jdbc.driver}"/>
                 <property name="url" value="${jdbc.url}"/>
@@ -21,7 +27,8 @@
             </dataSource>
         </environment>
     </environments>
-    
+
+    <!--定义映射器-->
     <mappers>
         <mapper resource="ArticleMapper.xml"/>
     </mappers>

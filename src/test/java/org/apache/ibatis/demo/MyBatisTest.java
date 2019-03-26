@@ -22,6 +22,7 @@ public class MyBatisTest {
     public void prepare() throws IOException {
         // 通过读取配置获得输入流
         String resource = "mybatis-config.xml";
+        // 从配置的信息中解析到Configuration类里面的对象
         InputStream inputStream = Resources.getResourceAsStream(resource);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         inputStream.close();
