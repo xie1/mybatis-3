@@ -6,9 +6,11 @@
 
 <configuration>
     <!--数据库外部配置-->
+    <!--properties标签-->
     <properties resource="jdbc.properties"/>
 
     <!--定义别名-->
+    <!--typeAliases标签-->
     <typeAliases>
         <typeAlias alias="Article" type="org.apache.ibatis.demo.model.Article"/>
     </typeAliases>
@@ -19,6 +21,7 @@
             <!--采用了jdbc事务管理模式-->
             <transactionManager type="JDBC"/>
             <!--配置数据库连接信息-->
+            <!--POOLED连接池-->
             <dataSource type="POOLED">
                 <property name="driver" value="${jdbc.driver}"/>
                 <property name="url" value="${jdbc.url}"/>

@@ -35,7 +35,7 @@ public class MyBatisTest {
             ArticleDao articleDao = session.getMapper(ArticleDao.class);
             List<Article> articles = articleDao.findByAuthorAndCreateTime("2", "2018-06-10");
             for (Article article : articles) {
-                System.out.println(article.getId());
+                System.out.println("文章的标题-->" + article.getTitle());
             }
         } finally {
             session.commit();
