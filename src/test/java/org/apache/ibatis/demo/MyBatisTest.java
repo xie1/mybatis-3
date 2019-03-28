@@ -30,16 +30,16 @@ public class MyBatisTest {
 
     @Test
     public void testMyBatis() throws IOException {
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            ArticleDao articleDao = session.getMapper(ArticleDao.class);
+            ArticleDao articleDao = sqlSession.getMapper(ArticleDao.class);
             List<Article> articles = articleDao.findByAuthorAndCreateTime("2", "2018-06-10");
             for (Article article : articles) {
                 System.out.println("文章的标题-->" + article.getTitle());
             }
         } finally {
-            session.commit();
-            session.close();
+            sqlSession.commit();
+            sqlSession.close();
         }
     }
 }

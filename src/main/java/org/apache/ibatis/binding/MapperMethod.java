@@ -51,6 +51,7 @@ public class MapperMethod {
     this.method = new MethodSignature(config, mapperInterface, method);
   }
 
+  //执行方法
   public Object execute(SqlSession sqlSession, Object[] args) {
     Object result;
     switch (command.getType()) {
@@ -74,6 +75,8 @@ public class MapperMethod {
           executeWithResultHandler(sqlSession, args);
           result = null;
         } else if (method.returnsMany()) {
+
+          // 返回多条记录结果
           result = executeForMany(sqlSession, args);
         } else if (method.returnsMap()) {
           result = executeForMap(sqlSession, args);
@@ -134,6 +137,13 @@ public class MapperMethod {
     }
   }
 
+  /** 
+  * @Description: 返回多个记录条件
+  * @Param:  
+  * @return:  
+  * @Author: xieshanzhong
+  * @Date: 2019/3/28/028 
+  */ 
   private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
     List<E> result;
     Object param = method.convertArgsToSqlCommandParam(args);
