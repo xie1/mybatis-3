@@ -64,11 +64,14 @@ public class MapperRegistry {
       }
       boolean loadCompleted = false;
       try {
+        // 1、将type和MapperProxyFactory进行绑定，MapperProxyFactory可为mapper接口生成代理类
         knownMappers.put(type, new MapperProxyFactory<T>(type));
         // It's important that the type is added before the parser is run
         // otherwise the binding may automatically be attempted by the
         // mapper parser. If the type is already known, it won't try.
+        // 2、创建注解解析器。在Mybatis中，有XML和注解两种配置方式可选
         MapperAnnotationBuilder parser = new MapperAnnotationBuilder(config, type);
+        // 3、解析注解中的信息
         parser.parse();
         loadCompleted = true;
       } finally {

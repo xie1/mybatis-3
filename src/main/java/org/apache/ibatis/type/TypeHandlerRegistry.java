@@ -435,7 +435,7 @@ public final class TypeHandlerRegistry {
   }
 
   // java type + jdbc type + handler type
-
+  // 统一最后调用这个方法
   public void register(Class<?> javaTypeClass, JdbcType jdbcType, Class<?> typeHandlerClass) {
     register(javaTypeClass, jdbcType, getInstance(javaTypeClass, typeHandlerClass));
   }

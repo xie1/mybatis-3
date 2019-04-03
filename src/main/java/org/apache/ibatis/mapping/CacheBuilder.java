@@ -90,15 +90,20 @@ public class CacheBuilder {
   }
 
   public Cache build() {
+    // 设置默认的缓存类型（PerpetualCache）和缓存装饰器（LruCache）
     setDefaultImplementations();
+    // 通过反射创建缓存
     Cache cache = newBaseCacheInstance(implementation, id);
     setCacheProperties(cache);
     // issue #352, do not apply decorators to custom caches
+    // 对内置缓存PerpetualCache应用装饰
     if (PerpetualCache.class.equals(cache.getClass())) {
       for (Class<? extends Cache> decorator : decorators) {
+        // 通过反射创建装饰器实例
         cache = newCacheDecoratorInstance(decorator, cache);
         setCacheProperties(cache);
       }
+      // 添加装饰器
       cache = setStandardDecorators(cache);
     } else if (!LoggingCache.class.isAssignableFrom(cache.getClass())) {
       cache = new LoggingCache(cache);
@@ -128,6 +133,7 @@ public class CacheBuilder {
       if (readWrite) {
         cache = new SerializedCache(cache);
       }
+      //添加装饰器（Log及Synchronized）
       cache = new LoggingCache(cache);
       cache = new SynchronizedCache(cache);
       if (blocking) {

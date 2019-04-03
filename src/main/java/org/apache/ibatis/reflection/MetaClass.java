@@ -41,12 +41,14 @@ public class MetaClass {
 
 //  私有的构造方法
   private MetaClass(Class<?> type, ReflectorFactory reflectorFactory) {
+    // 两个新类reflectorFactory
     this.reflectorFactory = reflectorFactory;
     this.reflector = reflectorFactory.findForClass(type);
   }
 
-//  对外提供
+//  对外提供构建MetaClass
   public static MetaClass forClass(Class<?> type, ReflectorFactory reflectorFactory) {
+    // 调用私有的MetaClass
     return new MetaClass(type, reflectorFactory);
   }
 

@@ -171,6 +171,8 @@ public class Configuration {
     this.environment = environment;
   }
 
+
+  // 调用Configuration进行对配置文件的解析
   public Configuration() {
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);

@@ -32,7 +32,9 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
  */
 public class SqlSessionFactoryBuilder {
 
+  // 字符流处理
   public SqlSessionFactory build(Reader reader) {
+    // 调用build的重载方法
     return build(reader, null, null);
   }
 
@@ -44,9 +46,18 @@ public class SqlSessionFactoryBuilder {
     return build(reader, null, properties);
   }
 
+  /**
+  * @Description:统一调用此方法
+  * @Param: 3个参数
+  * @return:
+  * @Author: xieshanzhong
+  * @Date: 2019/3/29/029
+  */
   public SqlSessionFactory build(Reader reader, String environment, Properties properties) {
     try {
+      // 根据输入流进行构造XMLConfigBuilder
       XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);
+      //配置文件解析过程入口
       return build(parser.parse());
     } catch (Exception e) {
       throw ExceptionFactory.wrapException("Error building SqlSession.", e);
@@ -60,6 +71,8 @@ public class SqlSessionFactoryBuilder {
     }
   }
 
+
+  // 字节流处理
   public SqlSessionFactory build(InputStream inputStream) {
     return build(inputStream, null, null);
   }
@@ -76,6 +89,7 @@ public class SqlSessionFactoryBuilder {
     try {
       //初始化XMLConfigBuilder
       XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
+      // parser.parse()对configuration初始化
       return build(parser.parse());
     } catch (Exception e) {
       throw ExceptionFactory.wrapException("Error building SqlSession.", e);
@@ -90,6 +104,7 @@ public class SqlSessionFactoryBuilder {
   }
     
   public SqlSessionFactory build(Configuration config) {
+    // 实例化DefaultSqlSessionFactory()
     return new DefaultSqlSessionFactory(config);
   }
 

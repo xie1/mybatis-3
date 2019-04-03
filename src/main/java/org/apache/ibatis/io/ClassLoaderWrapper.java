@@ -111,6 +111,7 @@ public class ClassLoaderWrapper {
    * @return the resource or null
    */
   InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
+    // 由应用类加载器加载进来
     for (ClassLoader cl : classLoader) {
       if (null != cl) {
 

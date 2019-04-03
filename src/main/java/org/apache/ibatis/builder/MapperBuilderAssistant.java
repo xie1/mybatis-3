@@ -128,6 +128,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
       boolean readWrite,
       boolean blocking,
       Properties props) {
+    // 使用建造模式构建缓存实例
     Cache cache = new CacheBuilder(currentNamespace)
         .implementation(valueOrDefault(typeClass, PerpetualCache.class))
         .addDecorator(valueOrDefault(evictionClass, LruCache.class))
@@ -137,7 +138,9 @@ public class MapperBuilderAssistant extends BaseBuilder {
         .blocking(blocking)
         .properties(props)
         .build();
+    // 添加缓存到Configuration对象中
     configuration.addCache(cache);
+    // 设置currentCache遍历，即当前使用的缓存
     currentCache = cache;
     return cache;
   }
@@ -275,6 +278,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
     id = applyCurrentNamespace(id, false);
     boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
 
+    //创建建造器，设置各种属性
     MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id, sqlSource, sqlCommandType)
         .resource(resource)
         .fetchSize(fetchSize)
@@ -293,11 +297,13 @@ public class MapperBuilderAssistant extends BaseBuilder {
         .useCache(valueOrDefault(useCache, isSelect))
         .cache(currentCache);
 
+    // 获取或创建ParameterMap
     ParameterMap statementParameterMap = getStatementParameterMap(parameterMap, parameterType, id);
     if (statementParameterMap != null) {
       statementBuilder.parameterMap(statementParameterMap);
     }
 
+    // 构建MappedStatement
     MappedStatement statement = statementBuilder.build();
     configuration.addMappedStatement(statement);
     return statement;

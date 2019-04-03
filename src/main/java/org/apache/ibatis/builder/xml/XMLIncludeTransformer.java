@@ -46,8 +46,10 @@ public class XMLIncludeTransformer {
     Properties variablesContext = new Properties();
     Properties configurationVariables = configuration.getVariables();
     if (configurationVariables != null) {
+      // variablesContext添加configurationVariables
       variablesContext.putAll(configurationVariables);
     }
+    // 调用重载方法处理<include>
     applyIncludes(source, variablesContext, false);
   }
 
@@ -58,7 +60,11 @@ public class XMLIncludeTransformer {
    */
   private void applyIncludes(Node source, final Properties variablesContext, boolean included) {
     if (source.getNodeName().equals("include")) {
+      // 获取<sql>节点。若refid中包含属性占位符${}
+      // 则需先将属性占位符替换为对应的属性
       Node toInclude = findSqlFragment(getStringAttribute(source, "refid"), variablesContext);
+
+
       Properties toIncludeContext = getVariablesContext(source, variablesContext);
       applyIncludes(toInclude, toIncludeContext, true);
       if (toInclude.getOwnerDocument() != source.getOwnerDocument()) {

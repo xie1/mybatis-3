@@ -4,6 +4,22 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.apache.ibatis.demo.dao.ArticleDao">
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+    <!--引用另一个缓存-->
+    <cache-ref namespace="com.someone.application.data.SomeMapper"/>
+
+    <!--resultMap-->
+    <resultMap id="userResultMap" type="Article">
+        <id property="id" column="user_id" />
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+    </resultMap>
+
     <select id="findByAuthorAndCreateTime" resultType="Article">
         SELECT
             `id`, `title`, `author_id`, `content`, `create_time`

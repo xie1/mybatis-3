@@ -64,9 +64,12 @@ public class XMLScriptBuilder extends BaseBuilder {
   }
 
   public SqlSource parseScriptNode() {
+    // 解析SQL语句节点
     MixedSqlNode rootSqlNode = parseDynamicTags(context);
     SqlSource sqlSource = null;
+    // 根据isDynamic状态创建不同的sqlSource
     if (isDynamic) {
+
       sqlSource = new DynamicSqlSource(configuration, rootSqlNode);
     } else {
       sqlSource = new RawSqlSource(configuration, rootSqlNode, parameterType);
@@ -77,23 +80,31 @@ public class XMLScriptBuilder extends BaseBuilder {
   protected MixedSqlNode parseDynamicTags(XNode node) {
     List<SqlNode> contents = new ArrayList<>();
     NodeList children = node.getNode().getChildNodes();
+    // 遍历子字节
     for (int i = 0; i < children.getLength(); i++) {
       XNode child = node.newXNode(children.item(i));
       if (child.getNode().getNodeType() == Node.CDATA_SECTION_NODE || child.getNode().getNodeType() == Node.TEXT_NODE) {
+        // 获取文本内容
         String data = child.getStringBody("");
         TextSqlNode textSqlNode = new TextSqlNode(data);
+        // 是否包含一些动态标记的内容
         if (textSqlNode.isDynamic()) {
           contents.add(textSqlNode);
           isDynamic = true;
         } else {
+          // 创建StaticTextSqlNode
           contents.add(new StaticTextSqlNode(data));
         }
+        // child节点是Element_node类型。比如<if><where>
       } else if (child.getNode().getNodeType() == Node.ELEMENT_NODE) { // issue #628
+        // 获取节点名称，比如if、where、trim
         String nodeName = child.getNode().getNodeName();
+        // 根据节点名称获取NodeHandler
         NodeHandler handler = nodeHandlerMap.get(nodeName);
         if (handler == null) {
           throw new BuilderException("Unknown element <" + nodeName + "> in SQL statement.");
         }
+        // 处理child节点，生成相应的SqlNode
         handler.handleNode(child, contents);
         isDynamic = true;
       }

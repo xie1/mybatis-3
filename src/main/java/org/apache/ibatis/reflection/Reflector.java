@@ -62,6 +62,8 @@ public class Reflector {
   //记录了所有属性名称的集合
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
+
+  // 初始化
   public Reflector(Class<?> clazz) {
     type = clazz;
     addDefaultConstructor(clazz);
@@ -75,6 +77,7 @@ public class Reflector {
     for (String propName : readablePropertyNames) {
       caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
     }
+    //可写属性名称数组，用于保存setter方法对应的属性名称
     for (String propName : writeablePropertyNames) {
       caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
     }

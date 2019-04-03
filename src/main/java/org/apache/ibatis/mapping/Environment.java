@@ -42,6 +42,7 @@ public final class Environment {
     this.dataSource = dataSource;
   }
 
+  // 内部类
   public static class Builder {
       private String id;
       private TransactionFactory transactionFactory;
@@ -65,6 +66,7 @@ public final class Environment {
       return this.id;
     }
 
+    // 构建Environment
     public Environment build() {
       return new Environment(this.id, this.transactionFactory, this.dataSource);
     }

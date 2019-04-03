@@ -249,15 +249,15 @@ public class XPathParser {
 
 
   /**
-   * 通过转入的输入流进行对XML的解析（采用DOM解析）
+   * 通过传入的输入流进行对XML的解析（采用DOM解析）
    * @param inputSource
    * @return
    */
   private Document createDocument(InputSource inputSource) {
-    // 在完成初始化之后调用
+    // 在完成初始化之后调用此方法
     // important: this must only be called AFTER common constructor
     try {
-      //初始化DocumentBuilderFactory
+      //初始化DocumentBuilderFactory,通过工厂模式进行实例化构建对象
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(validation);
 
@@ -269,6 +269,7 @@ public class XPathParser {
 
 
       //创建DocumentBuilder并进行配置
+      // 抽象类是不能直接实例化
       DocumentBuilder builder = factory.newDocumentBuilder();
       builder.setEntityResolver(entityResolver);
       //设置异常处理对象
@@ -287,7 +288,7 @@ public class XPathParser {
         public void warning(SAXParseException exception) throws SAXException {
         }
       });
-      //加载XML文件
+      //加载XML文件(实现类是哪个)
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);
@@ -295,11 +296,12 @@ public class XPathParser {
   }
 
   private void commonConstructor(boolean validation, Properties variables, EntityResolver entityResolver) {
-    //赋初值
+    //赋初值,初始化公共参数
     this.validation = validation;
     this.entityResolver = entityResolver;
     this.variables = variables;
     //初始化一个XPathFactory
+    // 实例化一个(http://java.sun.com/jaxp/xpath/dom) 通过dom进行解析
     XPathFactory factory = XPathFactory.newInstance();
     //生成一个xpath
     this.xpath = factory.newXPath();

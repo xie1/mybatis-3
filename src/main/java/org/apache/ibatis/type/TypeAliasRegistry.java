@@ -39,6 +39,7 @@ public class TypeAliasRegistry {
 
   private final Map<String, Class<?>> TYPE_ALIASES = new HashMap<>();
 
+  //Mybatis内部类及 一些常见类型的别名注册过程
   public TypeAliasRegistry() {
     registerAlias("string", String.class);
 
@@ -121,7 +122,9 @@ public class TypeAliasRegistry {
     }
   }
 
+
   public void registerAliases(String packageName){
+    // 对节点含有packageName进行解析，注册别名
     registerAliases(packageName, Object.class);
   }
 

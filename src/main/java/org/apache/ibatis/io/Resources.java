@@ -109,7 +109,7 @@ public class Resources {
    * @return The resource
    * @throws java.io.IOException If the resource cannot be found or read
    */
-  public static InputStream getResourceAsStream(ClassLoader loader, String resource) throws IOException {
+  public static InputStream  getResourceAsStream(ClassLoader loader, String resource) throws IOException {
     InputStream in = classLoaderWrapper.getResourceAsStream(resource, loader);
     if (in == null) {
       throw new IOException("Could not find resource " + resource);
