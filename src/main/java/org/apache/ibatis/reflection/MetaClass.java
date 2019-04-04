@@ -46,7 +46,7 @@ public class MetaClass {
     this.reflector = reflectorFactory.findForClass(type);
   }
 
-//  对外提供构建MetaClass
+//  对外提供构建MetaClass 这个类存在的目的是什么？？
   public static MetaClass forClass(Class<?> type, ReflectorFactory reflectorFactory) {
     // 调用私有的MetaClass
     return new MetaClass(type, reflectorFactory);

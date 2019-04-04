@@ -11,7 +11,7 @@
             readOnly="true"/>
 
     <!--引用另一个缓存-->
-    <cache-ref namespace="com.someone.application.data.SomeMapper"/>
+    <!--<cache-ref namespace="com.someone.application.data.SomeMapper"/>-->
 
     <!--resultMap-->
     <resultMap id="userResultMap" type="Article">

@@ -519,6 +519,7 @@ public class Reflector {
    * @return True if the object has a writeable property by the name
    */
   public boolean hasSetter(String propertyName) {
+    // Map是否包含子节点的属性名cacheEnable
     return setMethods.keySet().contains(propertyName);
   }
 

@@ -122,11 +122,16 @@ public class XMLConfigBuilder extends BaseBuilder {
       loadCustomVfs(settings);
       //配置typeAliases
       typeAliasesElement(root.evalNode("typeAliases"));
+
       // 配置插件
       pluginElement(root.evalNode("plugins"));
+
+
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+
+
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
       // 数据环境的配置
@@ -153,6 +158,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     // 创建Configuration类的"元信息"对象
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
+      // 框架在初始化的时候，是否已把节点属性加入
       if (!metaConfig.hasSetter(String.valueOf(key))) {
         throw new BuilderException("The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }
@@ -188,7 +194,7 @@ public class XMLConfigBuilder extends BaseBuilder {
           String alias = child.getStringAttribute("alias");
           String type = child.getStringAttribute("type");
           try {
-              // 获取Class类对象
+              // 获取Class类对象,通过class名获取,采用反射机制.
             Class<?> clazz = Resources.classForName(type);
             if (alias == null) {
                 // 别名为空时的处理
@@ -204,7 +210,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
-  // 常见插件，分页插件，分表插件
+  // 常见插件,分页插件,分表插件
   private void pluginElement(XNode parent) throws Exception {
     if (parent != null) {
         // parent.getChildren()为List<XNode>
@@ -260,6 +266,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 
       if (resource != null) {
           // 从文件系统中加载并解析属性文件
+        // putAll()
         defaults.putAll(Resources.getResourceAsProperties(resource));
       } else if (url != null) {
           // 通过url加载并解析属性文件
